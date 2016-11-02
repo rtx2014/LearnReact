@@ -17,15 +17,21 @@ var reducer = (state = stateDefault, action) => {
     default:
       return state;
   }
-  return state;
 };
-var store = redux.createStore(reducer);
+var store = redux.createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
-console.log('currentState before dispatch', store.getState());
+var unsubscribe = store.subscribe(() => {
+  var state = store.getState();
+
+  document.getElementById('app').innerHTML = state.searchText;
+});
 
 store.dispatch({
   type: 'CHANGE_SEARCH_TEXT',
   searchText: 'Fuck you!'
 });
 
-console.log('currentState after dispatch', store.getState());
+store.dispatch({
+  type: 'CHANGE_SEARCH_TEXT',
+  searchText: 'Fuck youself!'
+});
